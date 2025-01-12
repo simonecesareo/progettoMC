@@ -10,9 +10,8 @@ import {
 import AppStyles from '../AppStyles';
 
 export default function UserRegistrationForm({ onSave }) {
-  // -----------------------
-  // STATO
-  // -----------------------
+
+  // Stato per i dati del form
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -23,7 +22,7 @@ export default function UserRegistrationForm({ onSave }) {
     cardCVV: ''
   });
 
-  // Errori per singolo campo
+  // Stato per gli errori
   const [errors, setErrors] = useState({
     cardFullName: '',
     cardNumber: '',
@@ -32,61 +31,56 @@ export default function UserRegistrationForm({ onSave }) {
     cardCVV: ''
   });
 
-  // Indica se l’intero form è valido
+  // Stato per la validità del form
   const [formValid, setFormValid] = useState(false);
 
-  // -----------------------
-  // FUNZIONI DI VALIDAZIONE
-  // -----------------------
+  // Controlla che il nome e cognome siano uguali al nome sulla carta
   const checkFullName = (firstName, lastName, cardFullName) => {
     const fullNameNoSpace = (firstName + lastName).replace(/\s+/g, '').toLowerCase();
     const cardFullNameNoSpace = cardFullName.replace(/\s+/g, '').toLowerCase();
     return fullNameNoSpace === cardFullNameNoSpace;
   };
 
+  // Controlla che il numero della carta sia composto da 16 cifre
   const checkCardNumber = (number) => /^[0-9]{16}$/.test(number);
 
+  // Controlla che la data di scadenza sia valida
   const checkCardExpiryDate = (month, year) => {
     const mm = parseInt(month, 10);
     const yy = parseInt(year, 10);
-    if (isNaN(mm) || isNaN(yy)) return false;
-    if (mm < 1 || mm > 12) return false;
-
-    const expiryDate = new Date(yy, mm - 1, 1);
+    if (isNaN(mm) || isNaN(yy)) return false; // Non sono numeri
+    if (mm < 1 || mm > 12) return false; // Mese non valido
+  
+    const expiryDate = new Date(yy, mm - 1, 1); 
     const now = new Date();
-    if (expiryDate.getFullYear() < now.getFullYear()) return false;
+
+    if(expiryDate.getFullYear() - now.getFullYear() > 10) return false; // Anno troppo lontano
+    if (expiryDate.getFullYear() < now.getFullYear()) return false; // Anno passato
     if (
       expiryDate.getFullYear() === now.getFullYear() &&
       expiryDate.getMonth() < now.getMonth()
     ) {
-      return false;
+      return false; // Mese passato
     }
     return true;
   };
 
+  // Controlla che il CVV sia composto da 3 cifre
   const checkCVV = (cvv) => /^[0-9]{3}$/.test(cvv);
 
-  // -----------------------
-  // FUNZIONE PER STILE INPUT
-  // -----------------------
-  /**
-   * getInputStyle
-   * Applica lo stile base (AppStyles.input).
-   * Se l'utente ha scritto qualcosa e non ci sono errori,
-   * sovrascrive il colore del bordo con verde (#3BB143).
-   */
+  // Stile del campo input
+  // Se il campo è compilato correttamente, il bordo diventa verde, altrimenti resta grigio
   const getInputStyle = (value, fieldError) => [
     AppStyles.input,
     value.trim().length > 0 && fieldError === '' && { borderColor: '#3BB143' }
   ];
 
-  // -----------------------
-  // GESTIONE CAMBI INPUT
-  // -----------------------
+  // Funzione per gestire i cambiamenti nei campi del form
   const handleChange = (field, value) => {
     const newFormData = { ...formData, [field]: value };
-    setFormData(newFormData);
+    setFormData(newFormData); // Aggiorna lo stato dei dati del form
 
+    // Controlla la validità del campo
     setErrors((prev) => {
       const newErrors = { ...prev };
 
@@ -102,14 +96,14 @@ export default function UserRegistrationForm({ onSave }) {
           : 'Assicurati che il nome sulla carta corrisponda a Nome e Cognome';
       }
 
-      // Numero carta
+      // Numero carta 
       if (field === 'cardNumber') {
         newErrors.cardNumber = checkCardNumber(value)
           ? ''
           : 'Per favore, inserisci 16 cifre per il numero della carta';
       }
 
-      // Data di scadenza
+      // Data di scadenza 
       if (field === 'cardExpireMonth' || field === 'cardExpireYear') {
         const isValid = checkCardExpiryDate(
           newFormData.cardExpireMonth,
@@ -137,34 +131,29 @@ export default function UserRegistrationForm({ onSave }) {
     });
   };
 
-  // -----------------------
-  // VERIFICA VALIDITÀ
-  // -----------------------
+  // Controlla se il form è completamente valido
   const isFormCompletelyValid = () => {
-    // a) Nessun campo vuoto
+    // Nessun campo vuoto
     for (const key in formData) {
       if (!formData[key].trim()) return false;
     }
-    // b) Nessun errore
+    // Nessun errore
     for (const key in errors) {
       if (errors[key]) return false;
     }
     return true;
   };
 
+  // Effettua un controllo iniziale per la validità del form
   useEffect(() => {
     setFormValid(isFormCompletelyValid());
   }, [formData, errors]);
 
-  // -----------------------
-  // RENDER
-  // -----------------------
   return (
     <ScrollView contentContainerStyle={AppStyles.container}>
       <View style={AppStyles.formContainer}>
-        <Text style={AppStyles.formTitle}>Registrazione Dati Utente</Text>
+        <Text style={AppStyles.formTitle}>Registrazione</Text>
 
-        {/* First Name */}
         <TextInput
           style={getInputStyle(formData.firstName, errors.cardFullName)}
           placeholder="Nome"
@@ -172,7 +161,6 @@ export default function UserRegistrationForm({ onSave }) {
           onChangeText={(text) => handleChange('firstName', text)}
         />
 
-        {/* Last Name */}
         <TextInput
           style={getInputStyle(formData.lastName, errors.cardFullName)}
           placeholder="Cognome"
@@ -182,10 +170,9 @@ export default function UserRegistrationForm({ onSave }) {
 
         <Text style={AppStyles.formSubtitle}>Dati di pagamento</Text>
 
-        {/* Card Full Name */}
         <TextInput
           style={getInputStyle(formData.cardFullName, errors.cardFullName)}
-          placeholder="Nome sulla carta"
+          placeholder="Nome e cognome (carta)"
           value={formData.cardFullName}
           onChangeText={(text) => handleChange('cardFullName', text)}
         />

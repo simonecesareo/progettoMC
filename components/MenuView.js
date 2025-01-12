@@ -12,14 +12,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text, Image } from 'react-native';
-import MenuList from '../MenuList';
+import MenuList from './MenuList';
 import ViewModel from '../ViewModel';
 import StorageManager from '../models/storage/StorageManager';
 import ApiService from '../models/api/ApiService';
 import AppStyles from '../AppStyles';
-import MenuDetails from '../MenuDetails';
+import MenuDetails from './MenuDetails';
 
-export default function MenuView({ sid, canUseLocation }) {
+export default function MenuView({ sid, canUseLocation, handleOrder }) {
   const [menus, setMenus] = useState([]);        // Menu visualizzati
   const [loading, setLoading] = useState(true);  // Stato caricamento
   const [location, setLocation] = useState(null); // Posizione utente
@@ -92,13 +92,17 @@ export default function MenuView({ sid, canUseLocation }) {
     setSelectedMenu(null);
   };
 
-  if (loading) {
+  function renderLoadingScreen() {
     return (
       <View style={AppStyles.loadingContainer}>
-        <Image source={require('../../assets/pizzagif.webp')} style={AppStyles.loadingImage} />
-        <Text style={AppStyles.loadingText}>Stiamo preparando il tuo piatto preferito...</Text>
+        <Image source={require('../assets/pizzagif.webp')} style={AppStyles.loadingImage} />
+        <Text style={AppStyles.loadingText}>Caricamento in corso...</Text>
       </View>
     );
+  }
+
+  if (loading) {
+    return renderLoadingScreen();
   }
 
   if (!menus.length) {
@@ -108,7 +112,7 @@ export default function MenuView({ sid, canUseLocation }) {
   return (
     <View>
       {selectedMenu ? (
-        <MenuDetails menu={selectedMenu} sid={sid} onBack={handleBackToList} userLocation={location} />
+        <MenuDetails menu={selectedMenu} sid={sid} onBack={handleBackToList} userLocation={location} onOrder={handleOrder} />
       ) : (
         <MenuList menus={menus} onSeeDetails={handleSeeDetails} />
       )}

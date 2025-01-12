@@ -62,6 +62,26 @@ const ViewModel = {
         }
     },
 
+    async buyMenu(mid, uid, sid, userLocation){
+        const isRegistered = await ApiService.isRegistered(uid, sid);
+        if(!isRegistered){
+            console.error("Utente non registrato.");
+            return false;
+        }
+        const isOrderActive = await ApiService.isOrderActive(uid, sid);
+        if(isOrderActive){
+            console.error("Ordine già attivo.");
+            return false;
+        }
+        try{
+            const response = await ApiService.makeOrder(mid, sid, userLocation);
+            console.log("Ordine effettuato:", response);
+            return response;
+        } catch (error) {
+            console.error("Errore durante l'effettuazione dell'ordine:", error);
+            return false;
+        }
+    }
 
     
 };
