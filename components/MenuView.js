@@ -114,7 +114,7 @@ export default function MenuView({ sid, canUseLocation, handleOrder }) {
       {selectedMenu ? (
         <MenuDetails menu={selectedMenu} sid={sid} onBack={handleBackToList} userLocation={location} onOrder={handleOrder} />
       ) : (
-        <MenuList menus={menus} onSeeDetails={handleSeeDetails} />
+        <MenuList menus={menus} onSeeDetails={handleSeeDetails} userLocation={location} onOrder={handleOrder} />
       )}
     </View>
   );

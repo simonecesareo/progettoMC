@@ -2,6 +2,7 @@ import ApiService from "./models/api/ApiService";
 import Menu from "./models/objects/Menu";
 import DetailedMenu from "./models/objects/DetailedMenu";
 import StorageManager from "./models/storage/StorageManager";
+import { use } from "react";
 
 const ViewModel = {
     async fetchMenus(latitude, longitude, sid) {
