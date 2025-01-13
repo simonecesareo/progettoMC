@@ -29,16 +29,20 @@ export default function MenuCard({
 			</Text>
 			{/* Pulsante per visualizzare i dettagli */}
 			<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-				<Button
-					title="Vedi Dettagli"
-					onPress={() => onSeeDetails(menu)}
-					color="#FF7F00" // Colore del pulsante
-				/>
-				<Button
-					title="Compra menu"
-					onPress={() => onOrder(menu.mid, userLocation)}
-					color="blue"
-				/>
+				<View style={{ flex: 3 }}>
+					<Button
+						title="Vedi Dettagli"
+						onPress={() => onSeeDetails(menu)}
+						color="#FF7F00" // Colore del pulsante
+					/>
+				</View>
+				<View style={{ flex: 2 }}>
+					<Button
+						title="Compra menu"
+						onPress={() => onOrder(menu.mid, userLocation)}
+						color="blue"
+					/>
+				</View>
 			</View>
 		</View>
 	);
