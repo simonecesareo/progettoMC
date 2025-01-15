@@ -52,6 +52,8 @@ export default function UserModify({ onSave, user }) {
 
     const expiryDate = new Date(yy, mm - 1, 1);
     const now = new Date();
+
+    if(expiryDate.getFullYear() - now.getFullYear() > 10) return false; // Anno troppo lontano
     if (expiryDate.getFullYear() < now.getFullYear()) return false;
     if (
       expiryDate.getFullYear() === now.getFullYear() &&

@@ -1,3 +1,4 @@
+// AppStyles.js
 import { StyleSheet } from 'react-native';
 
 const AppStyles = StyleSheet.create({
@@ -81,7 +82,7 @@ const AppStyles = StyleSheet.create({
     marginBottom: 5,
   },
   menuCardDescription: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#666',
   },
   menuCardPrice: {
@@ -91,7 +92,7 @@ const AppStyles = StyleSheet.create({
     marginTop: 10,
   },
   menuCardDeliveryTime: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#999',
     marginTop: 5,
   },
@@ -140,8 +141,6 @@ const AppStyles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 4,
   },
-
-  // Titolo principale della pagina (“Profilo”), centrato
   profilePageTitle: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -149,37 +148,31 @@ const AppStyles = StyleSheet.create({
     marginVertical: 15,
     color: '#333',
   },
-
-  // Titoli di sezione (sottili, piccoli)
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '300', // testo sottile
+    fontWeight: '300',
     color: '#666',
     marginBottom: 10,
   },
-
-  // Righe label-valore allineate orizzontalmente
   userDetailsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
   },
-  // Label del campo (es. “Nome:”)
   userDetailsLabel: {
     fontSize: 18,
     fontWeight: '500',
     color: '#555',
     marginRight: 10,
   },
-  // Valore del campo (es. “Mario”)
-    userDetailsValue: {
+  userDetailsValue: {
     fontSize: 18,
     color: '#333',
-    flexShrink: 1, // se serve andare a capo su dispositivi stretti
+    flexShrink: 1,
   },
 
   // =======================
-  // Stile per input (modificato per maggiore uniformità)
+  // Stile per input
   // =======================
   input: {
     height: 50,
@@ -192,7 +185,7 @@ const AppStyles = StyleSheet.create({
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
@@ -203,25 +196,26 @@ const AppStyles = StyleSheet.create({
   formContainer: {
     padding: 20,
     backgroundColor: '#fff',
-    // potresti usare '#f9f9f9' se preferisci un contrasto
   },
   formTitle: {
     fontSize: 24,
     fontWeight: '700',
     color: '#FF7F00',
     marginVertical: 10,
+    textAlign: 'center',
   },
   formSubtitle: {
     fontSize: 18,
     fontWeight: '600',
     color: '#333',
     marginVertical: 10,
+    textAlign: 'center',
   },
   formErrorText: {
     color: '#999',
     fontSize: 14,
     marginBottom: 5,
-  }, 
+  },
   formButton: {
     backgroundColor: '#FF7F00',
     padding: 12,
@@ -233,6 +227,62 @@ const AppStyles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+
+  // =======================
+  // Stili dedicati a OrderStatus
+  // =======================
+  orderStatusContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f9f9f9',
+  },
+  orderStatusTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FF7F00',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  orderStatusMessage: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#555',
+    marginBottom: 20,
+    lineHeight: 22,
+    marginTop: 10,
+  },
+  orderStatusMessageSmall:{
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 10,
+    lineHeight: 22,
+  },
+  orderStatusMap: {
+    height: 350,
+    width: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginVertical: 10,
+  },
+  orderStatusDetailContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 15,
+    marginTop: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    elevation: 4,
+  },
+  orderStatusDetailText: {
+    fontSize: 16,
+    color: '#333',
+    marginVertical: 4,
+  },
+  orderStatusEmoji: {
+    fontSize: 22,
   },
 });
 
