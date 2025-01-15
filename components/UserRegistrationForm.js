@@ -153,7 +153,7 @@ export default function UserRegistrationForm({ onSave }) {
 
 	return (
 		<KeyboardAvoidingView contentContainerStyle={AppStyles.container}>
-			<ScrollView contentContainerStyle={AppStyles.container}>
+			<ScrollView>
 				<View style={AppStyles.formContainer}>
 					<Text style={AppStyles.formTitle}>Registrazione</Text>
 

@@ -65,6 +65,16 @@ export default function App() {
     initializeApp(); // Avvia l'inizializzazione all'avvio del componente
   }, []);
 
+  // Funzione per eliminare il database
+  const handleDeleteDB = async () => {
+    try {
+      await storage.deleteDB(); // Elimina il database locale
+      console.log('Database eliminato con successo.');
+    } catch (error) {
+      console.error('Errore durante l\'eliminazione del database:', error); // Gestisce errori durante l'eliminazione del database
+    }
+  }
+  
   // Funzione per gestire un nuovo ordine
   const handleOrder = async (mid, location) => {
     const isRegistered = await ApiService.isRegistered(uid, sid); // Controlla se l'utente è registrato
@@ -120,7 +130,7 @@ export default function App() {
       case 'OrderStatus':
         return <OrderStatus sid={sid} uid={uid} />;
       case 'UserProfile':
-        return <UserProfile uid={uid} sid={sid} />;
+        return <UserProfile uid={uid} sid={sid} handleDeleteDB={handleDeleteDB}/>;
       default:
         return <Text style={AppStyles.text}>Schermata non trovata</Text>; // Gestisce schermata non valida
     }

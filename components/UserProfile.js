@@ -23,7 +23,7 @@ import { View, Text, Image, ActivityIndicator } from "react-native";
 import { Button } from "react-native";
 import UserRegistrationForm from "./UserRegistrationForm";
 
-export default function UserProfile({ sid, uid }) {
+export default function UserProfile({ sid, uid, handleDeleteDB}) {
 	// Dichiarazione degli stati per gestire l'utente, la registrazione, la modifica e il caricamento
 	const [user, setUser] = useState(null);
 	const [isRegistered, setIsRegistered] = useState(false);
@@ -111,6 +111,12 @@ export default function UserProfile({ sid, uid }) {
 		return <UserModify user={user} onSave={handleSaveModification} />;
 	} else {
 		// Altrimenti mostra i dettagli utente
-		return <UserDetails user={user} onModify={handleModify} />;
+		return (
+			<UserDetails
+				user={user}
+				onModify={handleModify}
+				onDelete={handleDeleteDB}
+			/>
+		);
 	}
 }

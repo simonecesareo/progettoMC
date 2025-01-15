@@ -8,7 +8,7 @@ import React from 'react';
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import AppStyles from '../AppStyles'; // Assicurati che il path sia corretto
 
-export default function UserDetails({ user, onModify }) {
+export default function UserDetails({ user, onModify, onDelete }) {
   return (
     <ScrollView style={AppStyles.container}>
 
@@ -64,6 +64,16 @@ export default function UserDetails({ user, onModify }) {
           onPress={onModify}
         >
           <Text style={AppStyles.formButtonText}>Modifica</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Pulsante prova per Eliminare il DB in fondo */}
+      <View style={{ marginHorizontal: 10 }}>
+        <TouchableOpacity
+          style={AppStyles.formButton}
+          onPress={onDelete}
+        >
+          <Text style={AppStyles.formButtonText}>Cancella dati dal DB</Text>
         </TouchableOpacity>
       </View>
 
