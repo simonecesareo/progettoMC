@@ -12,10 +12,13 @@ export default class StorageManager {
 			const createSidTableQuery = `CREATE TABLE IF NOT EXISTS Sid (sid TEXT);`;
 			const createMenuImageTableQuery = `CREATE TABLE IF NOT EXISTS MenuImage (mid INTEGER PRIMARY KEY, imageVersion INTEGER, imageBase64 TEXT);`;
 			const createUidTableQuery = `CREATE TABLE IF NOT EXISTS Uid (uid INTEGER);`;
+			const createScreenQuery = `CREATE TABLE IF NOT EXISTS Screen (screen TEXT);`;
+			
 			// Esegui le query di creazione delle tabelle
 			await this.db.execAsync(createSidTableQuery);
 			await this.db.execAsync(createMenuImageTableQuery);
 			await this.db.execAsync(createUidTableQuery);
+			await this.db.execAsync(createScreenQuery);
 		} catch (error) {
 			console.error("Errore durante l'apertura del database:", error);
 		}
@@ -24,11 +27,10 @@ export default class StorageManager {
 	// Metodo per chiudere il database
 	async deleteDB() {
 		try {
-            console.log("Prova DB.");
+			console.log(this.db);
 			if (!this.db) throw new Error("Database non aperto.");
-            await this.db.closeAsync();
-            console.log("Database chiuso con successo.");
-
+			console.log("Eliminazione del database in corso...");
+			await this.db.closeAsync();
 			await SQLite.deleteDatabaseAsync("StorageDB"); // Elimina il database
 			console.log("Database eliminato con successo.");
 		} catch (error) {
@@ -60,6 +62,18 @@ export default class StorageManager {
 		}
 	}
 
+	// Metodo per salvare la schermata dell'app
+	async saveScreen(screen) {
+		try {
+			if (!this.db) throw new Error("Database non aperto.");
+			const query = "INSERT OR REPLACE INTO Screen (screen) VALUES (?);";
+			await this.db.runAsync(query, screen);
+			console.log("SCREEN salvato con successo.", screen );
+		} catch (error) {
+			console.error("Errore durante il salvataggio dello SCREEN:", error);
+		}
+	}
+
 	// Metodo per recuperare il Sid dell'utente dal database
 	async getSid() {
 		try {
@@ -82,6 +96,19 @@ export default class StorageManager {
 			return result; // Restituisce l'UID o null se non presente
 		} catch (error) {
 			console.error("Errore durante il recupero dell'UID:", error);
+			return null;
+		}
+	}
+
+	// Metodo per recuperare la schermata dell'app dal database
+	async getScreen() {
+		try {
+			if (!this.db) throw new Error("Database non aperto.");
+			const query = "SELECT * FROM Screen";
+			const result = await this.db.getFirstAsync(query);
+			return result; // Restituisce lo SCREEN o null se non presente
+		} catch (error) {
+			console.error("Errore durante il recupero dello SCREEN:", error);
 			return null;
 		}
 	}

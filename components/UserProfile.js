@@ -21,9 +21,10 @@ import User from "../models/objects/User";
 import AppStyles from "../AppStyles";
 import { View, Text, Image, ActivityIndicator } from "react-native";
 import { Button } from "react-native";
+import StorageManager from "../models/storage/StorageManager";
 import UserRegistrationForm from "./UserRegistrationForm";
 
-export default function UserProfile({ sid, uid, handleDeleteDB}) {
+export default function UserProfile({ sid, uid }) {
 	// Dichiarazione degli stati per gestire l'utente, la registrazione, la modifica e il caricamento
 	const [user, setUser] = useState(null);
 	const [isRegistered, setIsRegistered] = useState(false);
@@ -111,12 +112,6 @@ export default function UserProfile({ sid, uid, handleDeleteDB}) {
 		return <UserModify user={user} onSave={handleSaveModification} />;
 	} else {
 		// Altrimenti mostra i dettagli utente
-		return (
-			<UserDetails
-				user={user}
-				onModify={handleModify}
-				onDelete={handleDeleteDB}
-			/>
-		);
+		return <UserDetails user={user} onModify={handleModify} />;
 	}
 }
