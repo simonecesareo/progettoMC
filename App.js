@@ -26,7 +26,7 @@ export default function App() {
 
 				let currentSid;
 				let currentUid;
-				let currentScreenView; 
+				let currentScreenView;
 
 				// Recupera il SID, UID e SCREEN salvati nello storage locale
 				const storedSid = await storage.getSid();
@@ -50,7 +50,7 @@ export default function App() {
 
 					// Salva il nuovo SID e UID nello storage locale
 					await storage.saveSid(currentSid);
-					await storage.saveUid(currentUid);
+					await storage.saveUid(currentUid); 
 				}
 
 				setSid(currentSid); // Aggiorna lo stato con il nuovo SID
@@ -58,20 +58,19 @@ export default function App() {
 
 				if (storedScreen?.screen) {
 					currentScreenView = storedScreen.screen;
-					console.log("SCREEN recuperato dallo storage:", currentScreenView); 
-					setCurrentScreen(currentScreenView); // Imposta la schermata attuale
-					await storage.saveScreen(currentScreenView); // Salva la schermata attuale nello storage locale
+					console.log("SCREEN recuperato dallo storage:", currentScreenView);
+					setCurrentScreen(currentScreenView); // Imposta la schermata attuale con quella recuperata dallo storage
 				} else {
 					// Se SCREEN non presente nello storage locale, imposta la schermata iniziale a MenuView
-					setCurrentScreen("MenuView"); 
+					setCurrentScreen("MenuView");
 					console.log("SCREEN non trovato, impostato a MenuView.");
-					await storage.saveScreen("MenuView"); // Salva la schermata attuale nello storage locale
+					await storage.saveFirstScreen("MenuView"); // Salva la schermata attuale nello storage locale
 				}
 
 				// Richiede permessi per la localizzazione
 				const permits = await ApiService.locationPermissionAsync();
 				setCanUseLocation(permits);
-			} catch (error) {
+			} catch (error) { 
 				console.error("Errore durante l'inizializzazione:", error); // Gestisce eventuali errori
 			} finally {
 				setLoading(false); // Disabilita lo stato di caricamento
@@ -119,7 +118,7 @@ export default function App() {
 						} catch (error) {
 							console.error("Errore durante l'ordine:", error); // Gestisce errori durante l'ordine
 						}
-					},
+					}, 
 				},
 			],
 			{ cancelable: false } // Imposta la finestra di conferma come non annullabile
@@ -127,17 +126,17 @@ export default function App() {
 	};
 
 	// Cambia schermata in base alla tab selezionata
-	const onTabSelect = async (screen) => { 
+	const onTabSelect = async (screen) => {
 		try {
 			setCurrentScreen(screen);
 			await storage.openDB(); // Apre o crea il database locale
 			await storage.saveScreen(screen); // Salva la schermata attuale nello storage locale
+			const scr = await storage.getScreen(); // Recupera la schermata attuale dallo storage locale
+			console.log("Schermata recuperata:", scr.screen);
 		} catch (error) {
 			console.error("Errore durante il cambio di schermata:", error); // Gestisce errori durante il cambio di schermata
-		} finally {
-			console.log("Schermata currentScreen:", currentScreen);
-			console.log("Schermata screen:", screen);
 		}
+		console.log("Schermata currentScreen:", currentScreen);
 	};
 
 	// Funzione per eliminare il database

@@ -13,7 +13,7 @@ export default class StorageManager {
 			const createMenuImageTableQuery = `CREATE TABLE IF NOT EXISTS MenuImage (mid INTEGER PRIMARY KEY, imageVersion INTEGER, imageBase64 TEXT);`;
 			const createUidTableQuery = `CREATE TABLE IF NOT EXISTS Uid (uid INTEGER);`;
 			const createScreenQuery = `CREATE TABLE IF NOT EXISTS Screen (screen TEXT);`;
-			
+
 			// Esegui le query di creazione delle tabelle
 			await this.db.execAsync(createSidTableQuery);
 			await this.db.execAsync(createMenuImageTableQuery);
@@ -63,12 +63,24 @@ export default class StorageManager {
 	}
 
 	// Metodo per salvare la schermata dell'app
+	async saveFirstScreen(screen) {
+		try {
+			if (!this.db) throw new Error("Database non aperto.");
+			const query = "INSERT INTO Screen (screen) VALUES (?);";
+			await this.db.runAsync(query, screen);
+			console.log("SCREEN salvato con successo:", screen);
+		} catch (error) {
+			console.error("Errore durante il salvataggio dello SCREEN:", error);
+		}
+	}	
+	
+	// Metodo per salvare la schermata dell'app
 	async saveScreen(screen) {
 		try {
 			if (!this.db) throw new Error("Database non aperto.");
-			const query = "INSERT OR REPLACE INTO Screen (screen) VALUES (?);";
+			const query = "UPDATE Screen SET screen = (?);";
 			await this.db.runAsync(query, screen);
-			console.log("SCREEN salvato con successo.", screen );
+			console.log("SCREEN salvato con successo:", screen);
 		} catch (error) {
 			console.error("Errore durante il salvataggio dello SCREEN:", error);
 		}
@@ -106,12 +118,12 @@ export default class StorageManager {
 			if (!this.db) throw new Error("Database non aperto.");
 			const query = "SELECT * FROM Screen";
 			const result = await this.db.getFirstAsync(query);
-			return result; // Restituisce lo SCREEN o null se non presente
+			return result; // Restituisce l'UID o null se non presente
 		} catch (error) {
-			console.error("Errore durante il recupero dello SCREEN:", error);
+			console.error("Errore durante il recupero dello Screen:", error);
 			return null;
 		}
-	}
+	}	
 
 	// Metodo per salvare un'immagine di menu nel database
 	async saveMenuImage(mid, imageVersion, imageBase64) {
