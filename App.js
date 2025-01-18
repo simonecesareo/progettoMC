@@ -136,7 +136,6 @@ export default function App() {
 		} catch (error) {
 			console.error("Errore durante il cambio di schermata:", error); // Gestisce errori durante il cambio di schermata
 		}
-		console.log("Schermata currentScreen:", currentScreen);
 	};
 
 	// Funzione per eliminare il database
