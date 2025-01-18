@@ -2,6 +2,7 @@ import ApiService from "./models/api/ApiService";
 import Menu from "./models/objects/Menu";
 import DetailedMenu from "./models/objects/DetailedMenu";
 import StorageManager from "./models/storage/StorageManager";
+import { use } from "react";
 
 const ViewModel = {
     async fetchMenus(latitude, longitude, sid) {
@@ -78,6 +79,9 @@ const ViewModel = {
             console.log("Ordine effettuato:", response);
             return response;
         } catch (error) {
+            alert(
+				"Errore durante l'ordine, controlla i dati della carta di credito."
+			); // Avvisa se c'è un errore durante l'ordine
             console.error("Errore durante l'effettuazione dell'ordine:", error);
             return false;
         }

@@ -248,9 +248,8 @@ const AppStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: '#555',
-    marginBottom: 20,
     lineHeight: 22,
-    marginTop: 10,
+    marginTop: 15,
   },
   orderStatusMessageSmall:{
     fontSize: 14,

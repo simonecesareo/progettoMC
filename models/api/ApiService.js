@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import { Alert } from "react-native";
 
 export default class ApiService {
     // URL base del server
@@ -98,6 +99,17 @@ export default class ApiService {
             return request.status === "granted";
         } catch (error) {
             console.error("Error requesting location permission:", error);
+            Alert.alert(
+                "Accesso alla posizione negato o non disponibile",
+                "Concedi i permessi tramite le impostazioni del dispositivo per accedere alla posizione.",
+                [
+                    {
+                        text: "Ho capito",
+                        style: "cancel",
+                    }
+                ],
+                { cancelable: false } // Imposta la finestra di conferma come non annullabile
+            );
             return false;
         }
     }
