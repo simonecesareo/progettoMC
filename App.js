@@ -68,8 +68,23 @@ export default function App() {
 				}
 
 				// Richiede permessi per la localizzazione
-				const permits = await ApiService.locationPermissionAsync();
-				setCanUseLocation(permits);
+				try {
+					const permits = await ApiService.locationPermissionAsync();
+					setCanUseLocation(permits);
+				} catch (error) {
+					Alert.alert(
+						"Accesso alla posizione negato o non disponibile",
+						"Concedi i permessi tramite le impostazioni del dispositivo per accedere alla posizione.",
+						[
+							{
+								text: "Ho capito",
+								style: "cancel",
+							},
+						],
+						{ cancelable: false } // Imposta la finestra di conferma come non annullabile
+					);
+					console.error("Accesso alla posizione negato:", error)
+				}
 			} catch (error) {
 				console.error("Errore durante l'inizializzazione:", error); // Gestisce eventuali errori
 			} finally {
