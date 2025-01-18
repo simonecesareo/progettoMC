@@ -99,17 +99,6 @@ export default function App() {
 			return;
 		}
 
-		try {
-			const isOrderCorrect = await ApiService.makeOrder(mid, sid, location);
-			console.log("Ordine effettuato:", isOrderCorrect);
-		} catch (error) {
-			alert(
-				"Errore durante l'ordine, controlla i dati della carta di credito."
-			); // Avvisa se c'è un errore durante l'ordine
-			console.error("Errore durante l'ordine:", error);
-			return;
-		}
-
 		// Mostra una finestra di conferma prima di procedere con l'ordine
 		Alert.alert(
 			"Conferma acquisto",
