@@ -188,9 +188,9 @@ export default function App() {
 					currentScreen={currentScreen}
 					onTabSelect={onTabSelect}
 				/>
-				<TouchableOpacity style={AppStyles.formButton} onPress={handleDeleteDB}>
+				{/* <TouchableOpacity style={AppStyles.formButton} onPress={handleDeleteDB}>
 					<Text style={AppStyles.formButtonText}>Cancella dati dal DB</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 		</GestureHandlerRootView>
 	);

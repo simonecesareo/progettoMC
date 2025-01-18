@@ -110,7 +110,7 @@ const OrderStatus = ({ sid, uid }) => {
 						orderData.oid
 					);
 					setCourierPosition(updatedDetails.currentPosition);
-
+					fetchMenuDetails(updatedDetails);
 					if (updatedDetails.status === "COMPLETED") {
 						setScreenState("COMPLETED");
 						fetchMenuDetails(updatedDetails);
@@ -300,6 +300,22 @@ const OrderStatus = ({ sid, uid }) => {
 								Il tuo menu verrà consegnato alle ore{" "}
 								{formatDeliveryTime(orderData.expectedDeliveryTimestamp)}
 							</Text>
+						)}
+						{menuDetails && (
+							<View style={AppStyles.orderStatusDetailContainer}>
+								<Text style={AppStyles.orderStatusDetailText}>
+									<Text style={AppStyles.orderStatusEmoji}>🍕</Text> Menu:{" "}
+									{menuDetails.name}
+								</Text>
+								<Text style={AppStyles.orderStatusDetailText}>
+									<Text style={AppStyles.orderStatusEmoji}>📜</Text>{" "}
+									Descrizione: {menuDetails.shortDescription}
+								</Text>
+								<Text style={AppStyles.orderStatusDetailText}>
+									<Text style={AppStyles.orderStatusEmoji}>💰</Text> Costo:{" "}
+									{menuDetails.price}€
+								</Text>
+							</View>
 						)}
 					</View>
 				);
