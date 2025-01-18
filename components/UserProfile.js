@@ -93,6 +93,8 @@ export default function UserProfile({ sid, uid }) {
 					style={AppStyles.loadingImage}
 				/>
 				<Text style={AppStyles.loadingText}>Caricamento in corso...</Text>
+				<Text style={AppStyles.loadingText}>Se il problema persiste controlla {"\n"} la tua connessione di rete</Text>
+
 			</View>
 		);
 	}
