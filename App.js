@@ -50,7 +50,7 @@ export default function App() {
 
 					// Salva il nuovo SID e UID nello storage locale
 					await storage.saveSid(currentSid);
-					await storage.saveUid(currentUid); 
+					await storage.saveUid(currentUid);
 				}
 
 				setSid(currentSid); // Aggiorna lo stato con il nuovo SID
@@ -70,7 +70,7 @@ export default function App() {
 				// Richiede permessi per la localizzazione
 				const permits = await ApiService.locationPermissionAsync();
 				setCanUseLocation(permits);
-			} catch (error) { 
+			} catch (error) {
 				console.error("Errore durante l'inizializzazione:", error); // Gestisce eventuali errori
 			} finally {
 				setLoading(false); // Disabilita lo stato di caricamento
@@ -99,6 +99,17 @@ export default function App() {
 			return;
 		}
 
+		try {
+			const isOrderCorrect = await ApiService.makeOrder(mid, sid, location);
+			console.log("Ordine effettuato:", isOrderCorrect);
+		} catch (error) {
+			alert(
+				"Errore durante l'ordine, controlla i dati della carta di credito."
+			); // Avvisa se c'è un errore durante l'ordine
+			console.error("Errore durante l'ordine:", error);
+			return;
+		}
+
 		// Mostra una finestra di conferma prima di procedere con l'ordine
 		Alert.alert(
 			"Conferma acquisto",
@@ -113,12 +124,11 @@ export default function App() {
 					onPress: async () => {
 						try {
 							await ViewModel.buyMenu(mid, uid, sid, location); // Esegue l'ordine
-							console.log("Ordine effettuato con successo.");
 							setCurrentScreen("OrderStatus"); // Passa alla schermata di stato ordine
 						} catch (error) {
 							console.error("Errore durante l'ordine:", error); // Gestisce errori durante l'ordine
 						}
-					}, 
+					},
 				},
 			],
 			{ cancelable: false } // Imposta la finestra di conferma come non annullabile
@@ -174,7 +184,9 @@ export default function App() {
 		return (
 			<View style={AppStyles.loadingContainer}>
 				<Text style={AppStyles.loadingText}>Caricamento in corso...</Text>
-				<Text style={AppStyles.loadingText}>Se il problema persiste controlla {"\n"} la tua connessione di rete</Text>
+				<Text style={AppStyles.loadingText}>
+					Se il problema persiste controlla {"\n"} la tua connessione di rete
+				</Text>
 			</View>
 		);
 	}
