@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import { Alert } from "react-native";
 
 export default class ApiService {
     // URL base del server

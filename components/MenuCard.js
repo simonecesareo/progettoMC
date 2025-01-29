@@ -2,7 +2,12 @@ import React from "react";
 import { View, Text, Image, Button } from "react-native";
 import AppStyles from "../AppStyles";
 
-export default function MenuCard({ menu, onSeeDetails, userLocation, onOrder }) {
+export default function MenuCard({
+	menu,
+	onSeeDetails,
+	userLocation,
+	onOrder,
+}) {
 	//stampa menuImage a log per debug
 	return (
 		<View style={AppStyles.menuCard}>
@@ -23,13 +28,21 @@ export default function MenuCard({ menu, onSeeDetails, userLocation, onOrder }) 
 				Tempo di consegna: {menu.deliveryTime} min
 			</Text>
 			{/* Pulsante per visualizzare i dettagli */}
-			<View>
-				<Button
-					title="Vedi Dettagli"
-					onPress={() => onSeeDetails(menu)}
-					color="#FF7F00" // Colore del pulsante
-				/>
-
+			<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+				<View style={{ flex: 2 }}>
+					<Button
+						title="Vedi Dettagli"
+						onPress={() => onSeeDetails(menu)}
+						color="#FF7F00" // Colore del pulsante
+					/>
+				</View>
+				<View style={{ flex: 3 }}>
+					<Button
+						title="Compra menu"
+						onPress={() => onOrder(menu.mid, userLocation)}
+						color="blue"
+					/>
+				</View>
 			</View>
 		</View>
 	);

@@ -82,10 +82,12 @@ const OrderStatus = ({ sid, uid }) => {
 				if (details.status === "ON_DELIVERY") {
 					setCourierPosition(details.currentPosition);
 					setScreenState("ON_DELIVERY");
-				} else if (details.status === "COMPLETED") {
+					console.log(screenState);
 					// Carica i dettagli del menu
-					fetchMenuDetails(details);
+				} else if (details.status === "COMPLETED") {
 					setScreenState("COMPLETED");
+					console.log(screenState);
+					fetchMenuDetails(details);
 				} else {
 					console.log("Stato ordine sconosciuto:", details.status);
 					setScreenState("ERROR");
@@ -97,11 +99,12 @@ const OrderStatus = ({ sid, uid }) => {
 		};
 
 		initializeOrderStatus();
-	}, [sid, uid]);
+	}, [sid, uid, screenState]);
 
 	// Polling posizione corriere
 	useEffect(() => {
 		let intervalId;
+
 		if (screenState === "ON_DELIVERY" && orderData) {
 			const pollOrderStatus = async () => {
 				try {
@@ -110,7 +113,7 @@ const OrderStatus = ({ sid, uid }) => {
 						orderData.oid
 					);
 					setCourierPosition(updatedDetails.currentPosition);
-
+					fetchMenuDetails(updatedDetails);
 					if (updatedDetails.status === "COMPLETED") {
 						setScreenState("COMPLETED");
 						fetchMenuDetails(updatedDetails);
@@ -265,6 +268,10 @@ const OrderStatus = ({ sid, uid }) => {
 							style={AppStyles.loadingImage}
 						/>
 						<Text style={AppStyles.loadingText}>Caricamento in corso...</Text>
+						<Text style={AppStyles.loadingText}>
+							Se il problema persiste controlla {"\n"} la tua connessione di
+							rete
+						</Text>
 					</View>
 				);
 
@@ -301,6 +308,22 @@ const OrderStatus = ({ sid, uid }) => {
 								{formatDeliveryTime(orderData.expectedDeliveryTimestamp)}
 							</Text>
 						)}
+						{menuDetails && (
+							<View style={AppStyles.orderStatusDetailContainer}>
+								<Text style={AppStyles.orderStatusDetailText}>
+									<Text style={AppStyles.orderStatusEmoji}>🍕</Text> Menu:{" "}
+									{menuDetails.name}
+								</Text>
+								<Text style={AppStyles.orderStatusDetailText}>
+									<Text style={AppStyles.orderStatusEmoji}>📜</Text>{" "}
+									Descrizione: {menuDetails.shortDescription}
+								</Text>
+								<Text style={AppStyles.orderStatusDetailText}>
+									<Text style={AppStyles.orderStatusEmoji}>💰</Text> Costo:{" "}
+									{menuDetails.price}€
+								</Text>
+							</View>
+						)}
 					</View>
 				);
 
@@ -336,11 +359,14 @@ const OrderStatus = ({ sid, uid }) => {
 										{menuDetails.price}€
 									</Text>
 									{orderData?.deliveryTimestamp && (
-										<Text style={AppStyles.orderStatusDetailText}>
-											<Text style={AppStyles.orderStatusEmoji}>📅</Text>{" "}
-											Consegna effettuata il giorno{" "}
-											{formatDeliveryTimeAndDate(orderData.deliveryTimestamp)}.
-										</Text>
+										<View>
+											<Text style={AppStyles.orderStatusDetailText}>
+												<Text style={AppStyles.orderStatusEmoji}>📅</Text>{" "}
+												Consegna effettuata il giorno{" "}
+												{formatDeliveryTimeAndDate(orderData.deliveryTimestamp)}
+												.
+											</Text>
+										</View>
 									)}
 								</View>
 							)
