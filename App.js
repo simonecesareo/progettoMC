@@ -71,19 +71,17 @@ export default function App() {
 				try {
 					const permits = await ApiService.locationPermissionAsync();
 					setCanUseLocation(permits);
+					if (!permits) {
+						setCurrentScreen("ErrorPositionScreen");
+						console.log(currentScreen);
+						console.log(
+							"Accesso alla posizione negato: Permessi di posizione =",
+							permits
+						);
+					}
 				} catch (error) {
-					Alert.alert(
-						"Accesso alla posizione negato o non disponibile",
-						"Concedi i permessi tramite le impostazioni del dispositivo per accedere alla posizione.",
-						[
-							{
-								text: "Ho capito",
-								style: "cancel",
-							},
-						],
-						{ cancelable: false } // Imposta la finestra di conferma come non annullabile
-					);
-					console.error("Accesso alla posizione negato:", error)
+					setCurrentScreen(""); // Reindirizza alla schermata di errore
+					console.error("Errore durante la richiesta di posizione:", error);
 				}
 			} catch (error) {
 				console.error("Errore durante l'inizializzazione:", error); // Gestisce eventuali errori
@@ -178,8 +176,28 @@ export default function App() {
 				return <OrderStatus sid={sid} uid={uid} />;
 			case "UserProfile":
 				return <UserProfile uid={uid} sid={sid} />;
+			case "ErrorPositionScreen":
+				return (
+					<View style={AppStyles.orderStatusContainer}>
+						<Text style={AppStyles.orderStatusTitle}>
+							Permessi di posizione negati.{" "}
+						</Text>
+						<Text style={AppStyles.orderStatusMessage}>
+							Consenti l'utilizzo dalle impostazioni per usare l'app al meglio!
+						</Text>
+					</View>
+				);
 			default:
-				return <Text style={AppStyles.text}>Schermata non trovata</Text>; // Gestisce schermata non valida
+				return (
+					<View style={AppStyles.orderStatusContainer}>
+						<Text style={AppStyles.orderStatusTitle}>
+							Qualcosa è andato storto :(
+						</Text>
+						<Text style={AppStyles.orderStatusMessage}>
+							Prova a controllare la connessione di rete o i permessi della posizione
+						</Text>
+					</View>
+				); // Gestisce schermata non valida
 		}
 	};
 	1;

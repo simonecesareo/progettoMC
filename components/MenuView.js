@@ -124,7 +124,19 @@ export default function MenuView({ sid, canUseLocation, handleOrder }) {
 	}
 
 	if (!menus.length) {
-		return <Text>Nessun menu disponibile nella tua area.</Text>;
+		return (
+			<View style={AppStyles.orderStatusContainer}>
+				<Text style={AppStyles.orderStatusTitle}>
+					Qualcosa è andato storto :(
+				</Text>
+				<Text style={AppStyles.orderStatusMessage}>
+					Non è disponibile nessun menu in questa zona.
+				</Text>
+				<Text style={AppStyles.orderStatusMessage}>
+					Prova a spostarti in un altro luogo :)
+				</Text>
+			</View>
+		);
 	}
 
 	return (
